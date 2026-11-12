@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGT Photo-Oracle Value & Longevity Calculator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #FFFFFF; /* White background */
+            color: #003366; /* Dark blue text for readability */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3 {
+            color: #0056b3; /* Blue headings */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background-color: #FFFFFF;
+            border: 2px solid #007BFF; /* Blue border */
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.15);
+        }
+
+        .app-link {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            color: #007BFF;
+        }
+        .app-link a { color: #007BFF; text-decoration: none; border-bottom: 1px dashed #007BFF; }
+
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-layout { grid-template-columns: 1fr; }
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #0056b3;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="number"], input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #F8F9FA;
+            border: 1px solid #CED4DA;
+            color: #003366;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #007BFF;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+        }
+
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            height: 500px; /* Taller to accommodate body mapping */
+            background-color: #F8F9FA;
+            border: 2px dashed #28A745; /* Green dashed border */
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        canvas {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .upload-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #28A745; /* Green button */
+            color: #FFFFFF;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            margin-bottom: 15px;
+            transition: background-color 0.2s;
+        }
+
+        .upload-btn:hover {
+            background-color: #218838;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #007BFF; /* Blue button */
+            color: #FFFFFF;
+            font-weight: bold;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+
+        .calculate-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .results-panel {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #F8F9FA;
+            border: 1px solid #007BFF;
+            border-left: 5px solid #28A745;
+            border-radius: 5px;
+            display: none; /* Hidden by default */
+        }
+
+        .result-line {
+            font-family: 'Courier New', Courier, monospace;
+            margin: 10px 0;
+            font-size: 1.1em;
+            line-height: 1.5;
+        }
+
+        .highlight { color: #0056b3; font-weight: bold; }
+        .highlight-green { color: #28A745; font-weight: bold; }
+        .highlight-blue { color: #007BFF; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>AGT Photo-Oracle Value & Longevity Calculator</h1>
+        <div class="app-link">
+            Integrated with Photo Oracle App: <a href="https://use-any-photo-type-check-your-dsy-o.vercel.app/" target="_blank">use-any-photo-type-check-your-dsy-o.vercel.app</a>
+        </div>
+
+        <div class="grid-layout">
+            <!-- Left Column: Inputs -->
+            <div>
+                <div class="input-group">
+                    <label>Full Name (first-name surname)</label>
+                    <input type="text" id="fullName" placeholder="e.g., david gomadza" value="david gomadza">
+                </div>
+                <div class="input-group">
+                    <label>Day of Birth</label>
+                    <input type="date" id="dob" value="1976-06-28">
+                </div>
+                <div class="input-group">
+                    <label>Day of Death at Birth (Original)</label>
+                    <input type="date" id="dodBirth" value="2048-07-02">
+                </div>
+                
+                <h3>Five-Finger Wealth Algorithm</h3>
+                <div class="input-group">
+                    <label>👍 Thumb: Bank Balance (Multiplier x20)</label>
+                    <input type="number" id="bankBalance" value="100000000000">
+                </div>
+                <div class="input-group">
+                    <label>☝️ Index: Gold Vouchers (Multiplier x38)</label>
+                    <input type="number" id="goldVouchers" value="500000000000000">
+                </div>
+                <div class="input-group">
+                    <label>🖕 Middle: Cash in Bank (Multiplier x42)</label>
+                    <input type="number" id="cashInBank" value="50000000000">
+                </div>
+                <div class="input-group">
+                    <label>💍 Ring: Borrowings All (Multiplier x30)</label>
+                    <input type="number" id="borrowings" value="0">
+                </div>
+                <div class="input-group">
+                    <label>🤙 Little: Bad Debt (Multiplier x0)</label>
+                    <input type="number" id="badDebt" value="0">
+                </div>
+
+                <button class="calculate-btn" onclick="processOracle()">Scan Photo & Calculate Advalue</button>
+            </div>
+
+            <!-- Right Column: Visualizer -->
+            <div>
+                <label>Upload Photo for AGT Mapping</label>
+                <input type="file" id="imageUpload" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                <button class="upload-btn" onclick="document.getElementById('imageUpload').click()">Choose Photo</button>
+                
+                <div class="canvas-container">
+                    <canvas id="oracleCanvas"></canvas>
+                </div>
+
+                <div style="font-size: 0.85em; color: #666; text-align: center; margin-top: 10px;">
+                    <em>* Path: Nose bridge → Lips → Chest → Naval → Back of body → Neck → Top back head → Forehead → Nose bridge.</em>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Panel -->
+        <div class="results-panel" id="resultsPanel">
+            <h2>Oracle Decryption Complete</h2>
+            <div id="outputText"></div>
+            <div style="margin-top: 15px; padding: 10px; background-color: #E8F5E9; border-radius: 5px; text-align: center;">
+                <strong style="color: #28A745;">🔊 The Photo has spoken the true value of the AGT.</strong>
+           .
+</div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('oracleCanvas');
+        const ctx = canvas.getContext('2d');
+        let img = new Image();
+        let isImageLoaded = false;
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    img.onload = function() {
+                        const container = canvas.parentElement;
+                        const scale = Math.min(container.clientWidth / img.width, container.clientHeight / img.height);
+                        canvas.width = img.width * scale;
+                        canvas.height = img.height * scale; // Maintain aspect ratio
+                        
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        isImageLoaded = true;
+                    }
+                    img.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function drawMappingLines() {
+            if (!isImageLoaded) {
+                canvas.width = 400;
+                canvas.height = 500;
+                ctx.fillStyle = "#FFFFFF";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw a simple silhouette to give context to the path
+                ctx.fillStyle = "#E9ECEF";
+                ctx.beginPath();
+                ctx.arc(200, 100, 60, 0, Math.PI * 2); // Head
+                ctx.fillRect(150, 160, 100, 140); // Torso
+                ctx.fill();
+                isImageLoaded = true;
+            }
+
+            const w = canvas.width;
+            const h = canvas.height;
+
+            // Define the path points as per instructions
+            const points = [
+                { x: w * 0.5, y: h * 0.25, label: "1. Nose Bridge Top" },
+                { x: w * 0.5, y: h * 0.35, label: "2. Lips" },
+                { x: w * 0.5, y: h * 0.50, label: "3. Chest" },
+                { x: w * 0.5, y: h * 0.65, label: "4. Naval" },
+                { x: w * 0.85, y: h * 0.65, label: "5. Pass to Back" }, // Simulating passing behind the body
+                { x: w * 0.85, y: h * 0.30, label: "6. Neck (Back)" },
+                { x: w * 0.85, y: h * 0.15, label: "7. Top Back Head" },
+                { x: w * 0.5, y: h * 0.15, label: "8. Forehead" },
+                { x: w * 0.5, y: h * 0.25, label: "9. Join: Nose Bridge" }
+            ];
+
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, points[0].y);
+            
+            let delay = 0;
+            points.forEach((point, index) => {
+                setTimeout(() => {
+                    ctx.lineTo(point.x, point.y);
+                    ctx.strokeStyle = "#007BFF"; // Blue line
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+
+                    // Draw point
+                    ctx.beginPath();
+                    ctx.arc(point.x, point.y, 5, 0, Math.PI * 2);
+                    ctx.fillStyle = "#28A745"; // Green dot
+                    ctx.fill();
+
+                    // Draw label
+                    ctx.fillStyle = "#003366";
+                    ctx.font = "bold 12px Arial";
+                    ctx.fillText(point.label, point.x + 10, point.y);
+                    
+                    // If it's the final point, speak and display the true value of the AGT
+                    if (index === points.length - 1) {
+                        setTimeout(() => {
+                            // Visual text box
+                            const boxWidth = 260;
+                            const boxHeight = 40;
+                            ctx.fillStyle = "#FFFFFF";
+                            ctx.fillRect(point.x - (boxWidth/2), point.y - 50, boxWidth, boxHeight);
+                            ctx.strokeStyle = "#28A745";
+                            ctx.lineWidth = 2;
+                            ctx.strokeRect(point.x - (boxWidth/2), point.y - 50, boxWidth, boxHeight);
+                            
+                            ctx.fillStyle = "#003366";
+                            ctx.font = "bold 14px Arial";
+                            ctx.textAlign = "center";
+                            ctx.fillText("AGT True Value:", point.x, point.y - 32);
+                            ctx.fillStyle = "#28A745";
+                            ctx.font = "bold 16px Arial";
+                            ctx.fillText("US$8,400,000,000,000", point.x, point.y - 16);
+                            ctx.textAlign = "start"; // Reset
+
+                            // Audio speech synthesis
+                            if ('speechSynthesis' in window) {
+                                // Cancel any ongoing speech
+                                window.speechSynthesis.cancel();
+                                const utterance = new SpeechSynthesisUtterance("The true value of the Advanced Geneticsynthesis Technology, A G T, is eight point four trillion United States dollars.");
+                                utterance.rate = 0.9;
+                                utterance.pitch = 1;
+                                window.speechSynthesis.speak(utterance);
+                            }
+                        }, 500);
+                    }
+                }, delay);
+                delay += 800; // 800ms delay between each line segment
+            });
+        }
+
+        function formatCurrency(num) {
+            return "US$" + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function generateAjaerAjaerDay(originalDod) {
+            const date = new Date(originalDod);
+            const month = date.toLocaleString('default', { month: 'long' }).toLowerCase();
+            const day = date.getDate();
+            const yearString = "99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999......";
+            return `${day} ${month} ${yearString} meaning will never die (the end of everything) but never achieved by anyone, you are the first one`;
+        }
+
+        function processOracle() {
+            // 1. Draw the new facial/body mapping path
+            drawMappingLines();
+
+            // 2. Get values
+            const name = document.getElementById('fullName').value.toLowerCase().trim();
+            const bank = parseFloat(document.getElementById('bankBalance').value) || 0;
+            const gold = parseFloat(document.getElementById('goldVouchers').value) || 0;
+            const cash = parseFloat(document.getElementById('cashInBank').value) || 0;
+            const borrow = parseFloat(document.getElementById('borrowings').value) || 0;
+            const badDebt = parseFloat(document.getElementById('badDebt').value) || 0;
+            const dodBirth = document.getElementById('dodBirth').value;
+
+            // 3. Calculate Advalue (Includes the base AGT value of 8.4 Trillion)
+            const agtBaseValue = 8400000000000; 
+            const advalue = (bank * 20) + (gold * 38) + (cash * 42) + (borrow * 30) - (badDebt * 0) + agtBaseValue;
+
+            // 4. Format Output
+            const ajaerDay = generateAjaerAjaerDay(dodBirth);
+            
+            const outputHTML = `
+                <div class="result-line">advalue this, '<span class="highlight">${name}</span>'</div>
+                <div class="result-line"><span class="highlight-blue">${formatCurrency(advalue)}</span></div>
+                <div class="result-line">ajaer agaer day: <span class="highlight-green">${ajaerDay}</span></div>
+                <br>
+                <div class="result-line" style="font-size: 0.9em; color: #555;">
+                    <em>* AGT Path mapping complete. Digital enzymes decoded.<br>
+                    * Advanced Geneticsynthesis Technology (AGT8000) protocol applied.<br>
+                    * Base AGT Value Added: <strong>US$8,400,000,000,000 (US$8.4 Trillion)</strong>.</em>
+                </div>
+            `;
+
+            const resultsPanel = document.getElementById('resultsPanel');
+            const outputText = document.getElementById('outputText');
+            
+            resultsPanel.style.display = 'block';
+            outputText.innerHTML = outputHTML;
+            
+            // Smooth scroll to results
+            resultsPanel.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Initialize with a blank canvas prompt
+        window.onload = function() {
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#003366";
+            ctx.font = "16px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("Upload a photo to begin AGT mapping", canvas.width/2, canvas.height/2);
+        }
+    </script>
+</body>
+</html>
